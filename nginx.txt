@@ -1,0 +1,25 @@
+sudo apt-get install nginx
+sudo rm /etc/nginx/sites-enabled/default
+sudo nano /etc/nginx/sites-available/node
+
+
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        proxy_set_header   X-Forwarded-For $remote_addr;
+        proxy_set_header   Host $http_host;
+        proxy_pass         "http://127.0.0.1:1337";
+    }
+}
+
+sudo ln -s /etc/nginx/sites-available/node /etc/nginx/sites-enabled/node
+
+sudo service nginx restart
+
+
+//running react app with nginx.
+
+
+pm2 start node_modules/react-scripts/bin/react-scripts.js --name app02 -- start
